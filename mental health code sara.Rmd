@@ -1,0 +1,438 @@
+---
+title: "Mental Health code"
+author: "Sara"
+date: "2024-02-05"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+
+```{r}
+library("shiny")
+library("rsconnect")
+library("agridat")
+library("readxl")
+library("ggplot2")
+library("dplyr")
+library("shinydashboard") 
+library("shinythemes")
+library("shinyWidgets")
+library("ggplot2")
+library("DT") 
+library("plotly")
+```
+
+
+
+```{r}
+# Read File 
+data = read.csv("mental_health_finaldata_1.csv")
+
+```
+
+
+
+```{r}
+#dimension
+dim(data)
+```
+
+```{r}
+#variables
+names(data)
+```
+
+
+```{r}
+#Checking Data type of Variable "Age"
+class(data$Age)
+```
+
+#Checking Variable data type 
+#All the variables are Character in the data
+
+```{r}
+#Checking Data type of Variable "Gender"
+class(data$Gender)
+```
+
+
+```{r}
+#Checking Data type of Variable "Occupation"
+class(data$Occupation)
+```
+
+```{r}
+#Checking Data type of Variable "Days_Indoors"
+class(data$Days_Indoors)
+
+```
+
+```{r}
+#Checking Data type of Variable "Growing_Stress"
+class(data$Growing_Stress)
+
+
+```
+
+```{r}
+#Checking Data type of Variable "Quarantine_Frustrations"
+class(data$Quarantine_Frustrations)
+```
+
+
+```{r}
+#Checking Data type of Variable "Changes_Habits"
+class(data$Changes_Habits)
+```
+
+```{r}
+#Checking Data type of Variable "Mental_Health_History"
+class(data$Mental_Health_History)
+```
+
+
+```{r}
+#Checking Data type of Variable "Weight_Change"
+class(data$Weight_Change)
+```
+
+
+
+```{r}
+#Checking Data type of Variable "Mood_Swings"
+class(data$Mood_Swings)
+```
+
+
+```{r}
+#Checking Data type of Variable "Coping_Struggles"
+class(data$Coping_Struggles)
+```
+
+
+
+```{r}
+#Checking Data type of Variable "Work_Interest"
+class(data$Work_Interest)
+```
+
+
+
+```{r}
+#Checking Data type of Variable "Social_Weakness"
+class(data$Social_Weakness)
+```
+
+#Creating a Dataframe
+```{r}
+data1<-data.frame(data)
+```
+
+#Summary of dataframe
+```{r}
+summary(data1)
+```
+
+
+
+#Cleaning the dataframe 
+#First we check for the NA values for each variables.
+#Than we sum the NA values for the dataframe. There is no NA in the dataframe
+#Checked the variables value and rename them appropriately
+#A new dataframe is created for variable "Age", 
+#For the variable Age we rename them "20-25" = "Early Twenties", "30-Above" = "Thirties and Above", "25-30" = "Late Twenties","16-20" ~ "Late Teens"
+#
+
+```{r}
+#Checking NA value for variable "Age"
+which(is.na(data1$Age))
+```
+
+
+```{r}
+#Checking NA value for variable "Gender"
+which(is.na(data1$Gender))
+```
+
+```{r}
+#Checking NA value for variable "Occupation"
+which(is.na(data1$Occupation))
+```
+
+```{r}
+#Checking NA value for variable "Days_Indoors"
+which(is.na(data1$Days_Indoors))
+```
+
+```{r}
+#Checking NA value for variable "Growing_Stress"
+which(is.na(data1$Growing_Stress))
+```
+
+```{r}
+#Checking NA value for variable "Quarantine_Frustrations"
+which(is.na(data1$Quarantine_Frustrations))
+```
+
+```{r}
+#Checking NA value for variable "Changes_Habits"
+which(is.na(data1$Changes_Habits))
+```
+
+```{r}
+#Checking NA value for variable "Mental_Health_History"
+which(is.na(data1$Mental_Health_History))
+```
+
+```{r}
+#Checking NA value for variable "Weight_Change"
+which(is.na(data1$Weight_Change))
+```
+
+```{r}
+#Checking NA value for variable "Mood_Swings"
+which(is.na(data1$Mood_Swings))
+```
+
+```{r}
+#Checking NA value for variable "Coping_Struggles"
+which(is.na(data1$Coping_Struggles))
+```
+
+
+```{r}
+#Checking NA value for variable "Work_Interest"
+which(is.na(data1$Work_Interest))
+```
+
+
+
+```{r}
+#Checking NA value for variable "Social_Weakness"
+which(is.na(data1$Social_Weakness))
+```
+
+
+```{r}
+#No NA value in the dataframe
+sum(is.na(data1))
+```
+
+
+
+```{r}
+#Checking the unique values in the variables Age in the dataframe and renaming them.
+#unique(data1$Age)
+
+# Rename values in the Age variable 
+# "20-25" = "Early Twenties"
+# "30-Above" = "Thirties and Above"
+# "25-30" = "Late Twenties"
+# "16-20" ~ "Late Teens"
+data1$Age[data1$Age == "20-25"] = "20"
+data1$Age[data1$Age == "30-Above"] = "30 "
+data1$Age[data1$Age == "25-30"] = "25"
+data1$Age[data1$Age == "16-20"] = "16"
+```
+
+
+
+
+```{r}
+#Checking the unique values in the variables Days_Indoors in the dataframe and renaming them.
+# Rename observation in the Days_Indoors variable 
+# "1-14 days" = "Short-Term"
+# "15-30 days" = "Thirties and Above"
+# "31-60 days" = "Medium-Term"
+# "More than 2 months" ~ "Long-Term"
+# "Go out Every day" = "Daily"
+unique(data1$Days_Indoors)
+data1$Days_Indoors[data1$Days_Indoors == "1-14 days"] = "Short-Term"
+data1$Days_Indoors[data1$Days_Indoors == "31-60 days"] = "Medium-Term"
+data1$Days_Indoors[data1$Days_Indoors == "Go out Every day"] = "Daily"
+data1$Days_Indoors[data1$Days_Indoors == "More than 2 months"] = "Long-Term"
+data1$Days_Indoors[data1$Days_Indoors == "15-30 days"] = "Thirties and Above"
+```
+
+
+
+
+
+
+```{r}
+#Checking the unique values in the variables Growing_Stress in the dataframe and renaming them.
+# Rename observation in the Growing_Stress 
+# The "Maybe" observations are taken as 'Yes'. Becasuse they are not sure about it, that mean they definitely got some stress.
+unique(data1$Growing_Stress)
+```
+
+
+```{r}
+data1$Growing_Stress[data1$Growing_Stress == "Maybe"] = "Yes"
+
+```
+
+```{r}
+#Checking the unique values in the variables  in the dataframe and renaming them.
+# Rename observation in the Quarantine_Frustrations 
+# The "Maybe" observations are taken as 'Yes'. Becasuse they are not sure about it, that mean they definitely got some Frustrations.
+unique(data1$Quarantine_Frustrations)
+```
+
+
+```{r}
+data1$Quarantine_Frustrations[data1$Quarantine_Frustrations == "Maybe"] = "Yes"
+```
+
+
+
+```{r}
+#Checking the unique values in the variables  in the dataframe and renaming them.
+# Rename observation in the Changes_Habits 
+# The "Maybe" observations are taken as 'Yes'. Becasuse they are not sure about it, that mean they definitely got some Changes_Habits.
+unique(data1$Changes_Habits)
+```
+
+
+```{r}
+data1$Changes_Habits[data1$Changes_Habits == "Maybe"] = "Yes"
+
+```
+
+```{r}
+#Checking the unique values in the variables  in the dataframe and renaming them.
+# Rename observation in the Mental_Health_History 
+# The "Maybe" observations are taken as 'Yes'. Becasuse they are not sure about it, that mean they definitely got some Mental_Health_History.
+unique(data1$Mental_Health_History)
+```
+
+
+```{r}
+data1$Mental_Health_History[data1$Mental_Health_History == "Maybe"] = "Yes"
+
+```
+
+
+```{r}
+#Checking the unique values in the variables  in the dataframe and renaming them.
+# Rename observation in the Weight_Change 
+# The "Maybe" observations are taken as 'Yes'. Becasuse they are not sure about it, that mean they definitely got some Weight_Change.
+unique(data1$Weight_Change)
+```
+
+
+```{r}
+data1$Weight_Change[data1$Weight_Change == "Maybe"] = "Yes"
+
+```
+
+
+
+
+```{r}
+#Checking the unique values in the variables  in the dataframe and renaming them.
+# Rename observation in the Work_Interest 
+# The "Maybe" observations are taken as 'Yes'. Becasuse they are not sure about it, that mean they definitely got some Work_Interest.
+unique(data1$Work_Interest)
+```
+
+
+```{r}
+data1$Work_Interest[data1$Work_Interest == "Maybe"] = "Yes"
+```
+
+
+
+```{r}
+#Checking the unique values in the variables  in the dataframe and renaming them.
+# Rename observation in the Social_Weakness 
+# The "Maybe" observations are taken as 'Yes'. Becasuse they are not sure about it, that mean they definitely got some Social_Weakness.
+unique(data1$Social_Weakness)
+```
+
+
+```{r}
+data1$Social_Weakness[data1$Social_Weakness == "Maybe"] = "Yes"
+
+
+```
+
+```{r}
+data1$Age <- as.numeric(as.character(data1$Age))
+
+```
+
+```{r}
+colnames(data1)
+```
+
+
+
+
+```{r}
+library(shiny)
+library(ggplot2)
+# Define UI
+ui <- fluidPage(
+  
+  # App title
+  titlePanel("Mental Health Data Analysis"),
+  
+  # Sidebar layout with input and output definitions
+  sidebarLayout(
+    
+    # Sidebar panel for inputs
+    sidebarPanel(
+      
+      selectInput(inputId = "hist_var",
+                  label = "Histogram variable:",
+                  choices = c("Age"),
+                  selected = "Age"),
+      
+      # Input: Select variable for pie chart
+      selectInput(inputId = "pie_var",
+                  label = "Pie chart variable:",
+                  choices = c("Gender","Days_Indoors", "Occupation", "Growing_Stress", 
+                              "Quarantine_Frustrations", "Changes_Habits", 
+                              "Mental_Health_History", "Weight_Change", 
+                              "Mood_Swings", "Coping_Struggles", 
+                              "Work_Interest", "Social_Weakness"),
+                  selected = "Gender")
+    ),
+    
+    # Main panel for displaying outputs
+    mainPanel(
+      plotOutput(outputId = "histogram"),
+      plotOutput(outputId = "pie_chart")
+    )
+  )
+)
+
+# Define server logic
+server <- function(input, output) {
+  
+  # Generate histogram based on user input
+  output$histogram <- renderPlot({
+    ggplot(data1, aes_string(x = input$hist_var)) +
+      geom_histogram(fill = "lightblue", color = "black", bins = 10) +
+      labs(x = input$hist_var, y = "Frequency", title = paste("Histogram of", input$hist_var))
+  })
+  
+  # Generate pie chart based on user input
+  output$pie_chart <- renderPlot({
+    counts <- table(data1[[input$pie_var]])
+    pie(counts, main = paste("Pie Chart of", input$pie_var), col = rainbow(length(counts)))
+  })
+}
+
+# Run the application
+shinyApp(ui = ui, server = server)
+```
+
+
